@@ -21,7 +21,10 @@ image = (
 )
 
 
-app = modal.App(name="modal-deepseek-ocr", image=image)
+app = modal.App(
+    name="modal-deepseek-ocr",
+    image=image,
+)
 
 FAST_BOOT = True
 MODEL_NAME = "deepseek-ai/DeepSeek-OCR"
@@ -31,7 +34,7 @@ GPU = "t4"
 hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
 vllm_cache_vol = modal.Volume.from_name("vllm-cache", create_if_missing=True)
 
-@app.function(image=image, gpu=GPU)
+@app.function(image=image, gpu=GPU, scaledown_window=60*5)
 @modal.concurrent(max_inputs=3)
 @modal.asgi_app(requires_proxy_auth=True)
 def ocrapp():
