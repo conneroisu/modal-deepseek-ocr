@@ -1,0 +1,9 @@
+.direnv
+*.so
+*.pyc
+__pycache__
+*.egg-info
+.ipynb_checkpoints
+*.onnx
+*.safetensors
+env.py
