@@ -1,7 +1,7 @@
 import modal
 
 image = (
-    modal.Image.from_registry("nvidia/cuda:12.8.0-devel-ubuntu22.04", add_python="3.13")
+    modal.Image.from_registry("nvidia/cuda:12.8.0-devel-ubuntu22.04", add_python="3.12")
     .entrypoint([])
     .apt_install("libgl1", "libglib2.0-0", "unzip", "wget", "git")
     .uv_pip_install(
