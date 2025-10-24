@@ -132,8 +132,30 @@ def ocrapp():
         with open(filename, "wb") as f:
             _ = f.write(bytes)
         image = Image.open(filename).convert("RGB")
-        prompt = "<image>\nFree OCR."
         prompt = f"<image>\nLocate <|ref|>{ref_text.strip()}<|/ref|> in the image."
+        model_input = [
+            {
+                "prompt": prompt,
+                "multi_modal_data": {"image": image}
+            },
+        ]
+        model_outputs = provider.llm.generate(model_input, provider.sampling_params)
+        full = ""
+        for output in model_outputs:
+            full += output.outputs[0].text
+        return {"output": full}
+
+    @app.post("/api/v1/custom")
+    async def custom(req: Request):
+        data = await req.json()
+        import base64
+        filename = data["file_name"]
+        img_data = data["image"]
+        prompt = data["prompt"]
+        bytes = base64.b64decode(img_data)
+        with open(filename, "wb") as f:
+            _ = f.write(bytes)
+        image = Image.open(filename).convert("RGB")
         model_input = [
             {
                 "prompt": prompt,
