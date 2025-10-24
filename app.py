@@ -144,7 +144,7 @@ def ocrapp():
             full += output.outputs[0].text
         return {"output": full}
 
-    @app.post("/api/v1/custom")
+    @web_app.post("/api/v1/custom")
     async def custom(req: Request):
         data = await req.json()
         import base64
