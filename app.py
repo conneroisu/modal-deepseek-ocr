@@ -1,15 +1,17 @@
 import modal
 
 image = (
-    modal.Image.from_registry("nvidia/cuda:12.8.0-devel-ubuntu22.04", add_python="3.12")
+    modal.Image.from_registry(
+        "nvidia/cuda:12.8.0-devel-ubuntu22.04",
+        add_python="3.12",
+    )
     .entrypoint([])
     .apt_install("libgl1", "libglib2.0-0", "unzip", "wget", "git")
     .uv_pip_install(
+        "torch==2.8.0",
         "huggingface_hub[hf_transfer]==0.35.0",
         "flashinfer-python==0.3.1",
-        "torch==2.9.0",
         "addict",
-        "matplotlib",
         "pillow",
     )
     .pip_install(
