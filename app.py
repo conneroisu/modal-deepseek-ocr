@@ -81,7 +81,6 @@ def ocrapp():
         with open(filename, "wb") as f:
             _ = f.write(bytes)
         image = Image.open(filename).convert("RGB")
-        prompt = "<image>\nFree OCR."
         prompt = "<image>\nDescribe this image in detail."
         model_input = [
             {
