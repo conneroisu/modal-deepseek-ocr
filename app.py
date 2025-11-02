@@ -12,6 +12,7 @@ image = (
         "huggingface_hub[hf_transfer]==0.35.0",
         "flashinfer-python==0.3.1",
         "addict",
+        "matplotlib",
         "pillow",
     )
     .pip_install(
@@ -36,7 +37,7 @@ GPU = "t4"
 hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
 vllm_cache_vol = modal.Volume.from_name("vllm-cache", create_if_missing=True)
 
-@app.function(image=image, gpu=GPU, scaledown_window=60*5)
+@app.function(image=image, gpu=GPU)
 @modal.concurrent(max_inputs=3)
 @modal.asgi_app(requires_proxy_auth=True)
 def ocrapp():
@@ -56,7 +57,6 @@ def ocrapp():
         provider.llm = LLM(
             model="deepseek-ai/DeepSeek-OCR",
             enable_prefix_caching=False,
-            mm_processor_cache_gb=0,
             logits_processors=[NGramPerReqLogitsProcessor]
         )
 
